@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Super admin{% endblock %}
+{% block content %}
+<h1>Administration</h1>
+<div class="grid">
+  <div class="card"><div class="stat">{{ stats.students }}</div>Students</div>
+  <div class="card"><div class="stat">{{ stats.experts }}</div>Medical experts</div>
+  <div class="card"><div class="stat">{{ stats.pending }}</div>Pending requests</div>
+  <div class="card"><div class="stat">{{ stats.completed }}</div>Completed</div>
+</div>
+
+<div class="card">
+  <h2>Add a medical expert</h2>
+  <form method="post" action="{{ url_for('admin_create_expert') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="full_name">Full name</label><input id="full_name" name="full_name" required maxlength="80">
+    <label for="email">Email</label><input id="email" name="email" type="email" required maxlength="120">
+    <label for="password">Temporary password</label><input id="password" name="password" type="password" required minlength="8">
+    <p><button class="btn" type="submit">Create expert</button></p>
+  </form>
+</div>
+
+<div class="card table-wrap">
+  <h2>Users</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for u in users %}
+      <tr>
+        <td>{{ u.full_name }}</td><td>{{ u.email }}</td><td>{{ u.role.replace('_',' ') }}</td>
+        <td>{{ 'Active' if u.is_active else 'Disabled' }}</td>
+        <td>
+        {% if u.role != 'super_admin' %}
+          <div class="row">
+            <form class="inline" method="post" action="{{ url_for('admin_toggle', uid=u.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn ghost small" type="submit">{{ 'Disable' if u.is_active else 'Enable' }}</button>
+            </form>
+            <form class="inline" method="post" action="{{ url_for('admin_delete', uid=u.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn danger small" type="submit">Delete</button>
+            </form>
+          </div>
+        {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card table-wrap">
+  <h2>All consultations</h2>
+  <table>
+    <thead><tr><th>Subject</th><th>Student</th><th>Expert</th><th>Status</th><th>Schedule</th></tr></thead>
+    <tbody>
+    {% for c in consults %}
+      <tr><td>{{ c.subject }}</td><td>{{ c.student_name }}</td><td>{{ c.expert_name or '-' }}</td>
+      <td><span class="badge {{ c.status }}">{{ c.status }}</span></td><td>{{ c.scheduled_at or '-' }}</td></tr>
+    {% else %}<tr><td colspan="5" class="muted">No consultations yet.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

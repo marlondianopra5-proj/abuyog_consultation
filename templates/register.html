@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Create account{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h2>Create a student account</h2>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="full_name">Full name</label>
+    <input id="full_name" name="full_name" required minlength="2" maxlength="80">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required maxlength="120">
+    <label for="password">Password (8+ characters, letters and numbers)</label>
+    <input id="password" name="password" type="password" required minlength="8">
+    <label for="confirm">Confirm password</label>
+    <input id="confirm" name="confirm" type="password" required minlength="8">
+    <p><button class="btn" type="submit">Create account</button></p>
+  </form>
+</div>
+{% endblock %}

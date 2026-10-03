@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b3b4a"/><stop offset="1" stop-color="#14707a"/></linearGradient></defs>
+<rect width="1600" height="900" fill="url(#g)"/>
+<g fill="#fff" opacity=".07">
+<path d="M120 140h360a40 40 0 0 1 40 40v140a40 40 0 0 1-40 40H260l-80 70v-70h-60a40 40 0 0 1-40-40V180a40 40 0 0 1 40-40z"/>
+<path d="M1000 120h380a40 40 0 0 1 40 40v120a40 40 0 0 1-40 40h-50v70l-80-70h-250a40 40 0 0 1-40-40V160a40 40 0 0 1 40-40z"/>
+<path d="M500 560h400a40 40 0 0 1 40 40v140a40 40 0 0 1-40 40H760l-80 70v-70H500a40 40 0 0 1-40-40V600a40 40 0 0 1 40-40z"/>
+<path d="M1180 560h300a40 40 0 0 1 40 40v110a40 40 0 0 1-40 40h-40v60l-70-60h-190a40 40 0 0 1-40-40V600a40 40 0 0 1 40-40z"/>
+</g>
+<g fill="#7ee0d2" opacity=".16">
+<path d="M70 560h40v-40h40v40h40v40h-40v40h-40v-40H70z"/><path d="M880 330h30v-30h30v30h30v30h-30v30h-30v-30h-30z"/>
+<path d="M1450 380h50v-50h50v50h50v50h-50v50h-50v-50h-50z"/><path d="M300 780h30v-30h30v30h30v30h-30v30h-30v-30h-30z"/>
+</g></svg>

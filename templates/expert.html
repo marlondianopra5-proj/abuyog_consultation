@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Medical expert{% endblock %}
+{% block content %}
+<h1>Consultation requests</h1>
+<h2>Open requests</h2>
+{% for c in pending %}
+<div class="card">
+  <div class="row"><h2>{{ c.subject }}</h2><span class="badge pending">pending</span></div>
+  <p class="muted">{{ c.student_name }} - {{ c.category }} - {{ c.created_at }}</p>
+  <p>{{ c.message }}</p>
+  <form method="post" action="{{ url_for('expert_update', cid=c.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="when{{ c.id }}">Schedule (required to accept)</label>
+    <input id="when{{ c.id }}" name="scheduled_at" type="datetime-local">
+    <label for="notes{{ c.id }}">Notes for the student</label>
+    <textarea id="notes{{ c.id }}" name="expert_notes" maxlength="1000"></textarea>
+    <div class="row">
+      <button class="btn small" name="action" value="accept" type="submit">Accept</button>
+      <button class="btn danger small" name="action" value="decline" type="submit">Decline</button>
+    </div>
+  </form>
+</div>
+{% else %}<p class="muted">No open requests right now.</p>{% endfor %}
+
+<h2>My consultations</h2>
+{% for c in mine %}
+<div class="card">
+  <div class="row"><h2>{{ c.subject }}</h2><span class="badge {{ c.status }}">{{ c.status }}</span></div>
+  <p class="muted">{{ c.student_name }} - {{ c.category }}{% if c.scheduled_at %} - {{ c.scheduled_at }}{% endif %}</p>
+  <p>{{ c.message }}</p>
+  {% if c.status == 'approved' %}
+  <form method="post" action="{{ url_for('expert_update', cid=c.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="n{{ c.id }}">Final notes</label>
+    <textarea id="n{{ c.id }}" name="expert_notes" maxlength="1000">{{ c.expert_notes or '' }}</textarea>
+    <p><button class="btn small" name="action" value="complete" type="submit">Mark completed</button></p>
+  </form>
+  {% elif c.expert_notes %}<p><strong>Notes:</strong> {{ c.expert_notes }}</p>{% endif %}
+</div>
+{% else %}<p class="muted">You have not accepted any consultations yet.</p>{% endfor %}
+{% endblock %}

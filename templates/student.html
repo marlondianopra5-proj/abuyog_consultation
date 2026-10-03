@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Student{% endblock %}
+{% block content %}
+<h1>My consultations</h1>
+<div class="card">
+  <h2>Request a consultation</h2>
+  <form method="post" action="{{ url_for('student_book') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="category">Category</label>
+    <select id="category" name="category" required>
+      {% for c in categories %}<option>{{ c }}</option>{% endfor %}
+    </select>
+    <label for="subject">Subject</label>
+    <input id="subject" name="subject" required minlength="3" maxlength="120">
+    <label for="message">Describe your concern</label>
+    <textarea id="message" name="message" required minlength="10" maxlength="1000"></textarea>
+    <p><button class="btn" type="submit">Send request</button></p>
+  </form>
+</div>
+{% for c in rows %}
+<div class="card">
+  <div class="row"><h2>{{ c.subject }}</h2><span class="badge {{ c.status }}">{{ c.status }}</span></div>
+  <p class="muted">{{ c.category }} - sent {{ c.created_at }}</p>
+  <p>{{ c.message }}</p>
+  {% if c.expert_name %}<p class="muted">Expert: {{ c.expert_name }}</p>{% endif %}
+  {% if c.scheduled_at %}<p><strong>Scheduled:</strong> {{ c.scheduled_at }}</p>{% endif %}
+  {% if c.expert_notes %}<p><strong>Expert notes:</strong> {{ c.expert_notes }}</p>{% endif %}
+  {% if c.status == 'pending' %}
+  <form method="post" action="{{ url_for('student_cancel', cid=c.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn danger small" type="submit">Cancel request</button>
+  </form>
+  {% endif %}
+</div>
+{% else %}
+<p class="muted">No consultations yet. Send your first request above.</p>
+{% endfor %}
+{% endblock %}
